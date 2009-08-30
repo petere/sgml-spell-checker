@@ -1,4 +1,4 @@
-.TH sgml-spell-checker 1 2003\-09\-04 "SGML spell checker" "SGML"
+.TH sgml-spell-checker 1 2004\-09\-19 "SGML spell checker" "SGML"
 .SH NAME
 sgml-spell-checker \- SGML spell checker
 .SH SYNOPSIS
@@ -89,7 +89,7 @@ Shows a brief help, then exits.
 .SH EXAMPLES
 .nf
 nsgmls -l -D . mydoc.sgml | \\
-sgml-spell-checker --language=en_US --dtd=docbook \\
+sgml-spell-checker --language=en --dtd=docbook \\
    --dictionary=mydict1.aspell --dictionary=mydict2.aspell
 .fi
 
@@ -107,7 +107,7 @@ dictionary file from a flat word list:
 
 .nf
 rm -f mydict1.aspell    # aspell won't overwrite existing files
-aspell --language-tag=xx create personal ./mydict1.aspell < mywordlist.txt
+aspell --language-tag=xx create master ./mydict1.aspell < mywordlist.txt
 .fi
 
 Watch the slashes.

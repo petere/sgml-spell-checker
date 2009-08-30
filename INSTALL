@@ -1,17 +1,17 @@
 Before you can start you need:
 
-* aspell: The actual spell checker.
+* aspell: the actual spell checker
 
-  See <http://aspell.sourceforge.net/>.  I have used versions 0.32.5
-  and 0.33.7.1.
+  See <http://aspell.net/>.  I have used versions 0.33.7.1, 0.50.5, and
+  0.60.  Support for versions before 0.50 will eventually be dropped.
 
-* nsgmls: An SGML parser, part of the OpenJade package.
+* nsgmls: an SGML parser, part of the OpenJade package
 
   See <http://openjade.sourceforge.net/>.  I have used versions 1.3
-  and 1.3.1.  (Sometimes the executable is called onsgmls -- no
+  1.3.1, and 1.3.2.  (Sometimes the executable is called onsgmls -- no
   difference.)
 
-* sgmlspl: SGML processing tool for Perl.  Part of the SGMLS package.
+* sgmlspl: SGML processing tool for Perl, part of the SGMLS package
 
   See <http://www.cpan.org/modules/by-module/SGMLS/>.  I have version
   1.03.  (Sometimes this package is known as perl-SGMLS.)

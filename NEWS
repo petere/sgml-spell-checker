@@ -1,0 +1,30 @@
+* Major changes in sgml-spell-checker 20040919
+
+  Released 2004-09-19 by Peter Eisentraut <peter_e@gmx.net>
+
+- aspell invocation changed to work with aspell 0.60
+
+- Documentation adjusted for newer aspell versions
+
+
+* Major changes in sgml-spell-checker 200404014
+
+  Released 2004-04-14 by Peter Eisentraut <peter_e@gmx.net>
+
+- Revision of DocBook exclusion list
+
+
+* Major changes in sgml-spell-checker 20030904
+
+  Released 2003-09-04 by Peter Eisentraut <peter_e@gmx.net>
+
+- Added man page
+
+- Use mkinstalldirs for installation; install -d was creating problems
+
+
+* Major changes in sgml-spell-checker 20020920
+
+  Released 2002-09-20 by Peter Eisentraut <peter_e@gmx.net>
+
+- Initial release

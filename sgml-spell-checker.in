@@ -31,7 +31,7 @@ $opts = "@pkgdatadir@/${dtd}-exclusion-list.txt" if $dtd;
 open(INSTREAM, "$sgmlspl @pkgdatadir@/sgml-spell-filter-spec.pl $opts |") or die;
 
 $opts = '';
-$opts .= " --add-extra-dicts='" . join(',', @dicts) . "'" if scalar(@dicts);
+$opts .= " --add-extra-dicts='$_'" foreach (@dicts);
 $opts .= " --language-tag=$language" if $language;
 
 $pid = open2(*Reader, *Writer, "$aspell --ignore=2 $opts --sug-mode=fast pipe");
