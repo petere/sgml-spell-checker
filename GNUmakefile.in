@@ -1,0 +1,76 @@
+# @configure_input@
+
+PACKAGE_NAME = @PACKAGE_NAME@
+PACKAGE_TARNAME = @PACKAGE_TARNAME@
+PACKAGE_VERSION = @PACKAGE_VERSION@
+TARFILE = $(PACKAGE_TARNAME)-$(PACKAGE_VERSION)
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+bindir = @bindir@
+datadir = @datadir@
+pkgdatadir = $(datadir)/$(PACKAGE_NAME)
+
+srcdir = @srcdir@
+
+INSTALL = $(srcdir)/install-sh -c
+INSTALL_SCRIPT = $(INSTALL) -m 755
+INSTALL_DATA = $(INSTALL) -m 644
+mkinstalldirs = $(INSTALL) -d
+
+ASPELL = @ASPELL@
+PERL = @PERL@
+SGMLSPL = @SGMLSPL@
+
+DISTFILES = COPYING GNUmakefile.in README configure configure.ac \
+	docbook-exclusion-list.txt install-sh sgml-spell-checker.in \
+	sgml-spell-filter-spec.pl INSTALL
+
+all: sgml-spell-checker
+
+sgml-spell-checker: sgml-spell-checker.in
+	sed -e "s%@PERL\@%$(PERL)%g" \
+	    -e "s%@ASPELL\@%$(ASPELL)%g" \
+	    -e "s%@SGMLSPL\@%$(SGMLSPL)%g" \
+	    -e "s%@pkgdatadir\@%$(pkgdatadir)%g" \
+	  $< >$@
+	chmod +x $@
+
+install: all installdirs
+	$(INSTALL_SCRIPT) sgml-spell-checker $(DESTDIR)$(bindir)
+	$(INSTALL_DATA) sgml-spell-filter-spec.pl $(DESTDIR)$(pkgdatadir)
+	$(INSTALL_DATA) docbook-exclusion-list.txt $(DESTDIR)$(pkgdatadir)
+
+installdirs:
+	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(pkgdatadir)
+
+clean:
+	$(RM) sgml-spell-checker
+	@$(RM) $(TARFILE).tar.gz
+
+distclean: clean
+	$(RM) GNUmakefile config.status config.log
+
+maintainer-clean: distclean
+
+check:
+
+distdir = /tmp/$(TARFILE)
+
+dist: $(TARFILE).tar.gz
+	rm -rf $(distdir)
+
+%.gz: %
+	gzip -f $<
+
+$(TARFILE).tar: distdir
+	tar -C $(dir $(distdir)) -c -h -f $@ $(notdir $(distdir))
+
+distdir:
+	mkdir $(distdir)
+	cp $(DISTFILES) $(distdir)
+
+GNUmakefile: GNUmakefile.in
+	cd $(srcdir) && ./config.status $@
+
+.PHONY: all install installdirs clean distclean maintainer-clean check dist

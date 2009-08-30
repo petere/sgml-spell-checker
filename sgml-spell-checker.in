@@ -1,0 +1,96 @@
+#!@PERL@ -w
+# -*- perl -*-
+
+use FileHandle;
+use Getopt::Long;
+use IPC::Open2;
+
+my $aspell = $ENV{'ASPELL'} || '@ASPELL@';
+my $sgmlspl = $ENV{'SGMLSPL'} || '@SGMLSPL@';
+
+my $debug = '';
+my $suggestions = '';
+my $language = '';
+my $dtd = '';
+GetOptions
+  ('debug!' => \$debug,
+   'suggestions!' => \$suggestions,
+   'language=s' => \$language,
+   'dictionary=s' => \@dicts,
+   'dtd=s' => \$dtd,
+
+   'help' => \&help);
+
+# If the paths are relative, prepend ./ so that aspell doesn't try to
+# look them up in its path.
+@dicts = map { $_ !~ m,^/, ? "./$_" : $_ } @dicts;
+
+my $opts = '';
+$opts = "@pkgdatadir@/${dtd}-exclusion-list.txt" if $dtd;
+open(INSTREAM, "$sgmlspl @pkgdatadir@/sgml-spell-filter-spec.pl $opts |") or die;
+
+$opts = '';
+$opts .= " --add-extra-dicts='" . join(',', @dicts) . "'" if scalar(@dicts);
+$opts .= " --language-tag=$language" if $language;
+
+$pid = open2(*Reader, *Writer, "$aspell --ignore=2 $opts --sug-mode=fast pipe");
+
+<Reader>;			# eat header
+print Writer "!\n";		# enter terse mode
+
+my $lineinfo = 0;
+
+while (defined($_ = <INSTREAM>)) {
+    chomp;
+
+    /^\s*$/ && next;
+    /^\# (.*)/ && do {
+        $lineinfo = $1;
+        next;
+    };
+    /^\^/ || die "invalid input line #$." . ($debug ? $_ : "") . "\n";
+
+    print Writer "$_\n";
+
+    while ($got = <Reader>) {
+        chomp($got);
+        last if $got eq '';
+
+        $got =~ /^\& (\S+) \S+ \S+: (.*)/ && do {
+            if ($suggestions) {
+                print "$lineinfo: $1   ($2)\n";
+            } else {
+                print "$lineinfo: $1\n";
+            }
+        };
+        $got =~ /^\# (\S+)/ && do {
+            print "$lineinfo: $1\n";
+        };
+    }
+}
+
+close INSTREAM;
+
+close Reader;
+close Writer;
+waitpid $pid, 0;
+
+
+sub help {
+    print <<END;
+$0 is an SGML spell-checker.
+
+Usage:
+  nsgmls ARGS... | $0 [OPTIONS...]
+
+Options:
+  --debug               Debug mode
+  --language=LANG       Language of the document (e.g., en or en_US)
+  --suggestions         Show suggestions for misspelled words
+  --dictionary=FILE     Use additional dictionary file
+                        (may be used multiple times)
+  --dtd=NAME            Use exclusion list for specified DTD (e.g., docbook)
+
+END
+    exit 0;
+}
