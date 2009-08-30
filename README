@@ -15,46 +15,13 @@ represent human-language text, such as <programlisting> in DocBook.
 An exclusion list for the DocBook DTD is included, others can be added
 trivially.
 
-To run the show, execute
-
-$ nsgmls -l yourdoc.sgml | sgml-spell-checker --dtd=docbook
-
-Provide to nsgmls the options you need, such as -c to search more
-catalogs, -i to include a marked section, or more source files.  Do
-not forget the -l option, or you won't get any file or line references
-for the misspellings.
-
-The second part of the pipe takes a couple of options.  Use --help to
-see a complete list.  Note that if the language of the document does
-not match your system's locale settings, you need to use the
---language option.
-
-Read the aspell documentation about how to set up the appropriate
-dictionaries.  To use one or more personal dictionaries in this
-particular run only, pass the names of the dictionary files on the
-command line, such as:
-
-... | sgml-spell-checker --dictionary=mydict1.aspell --dictionary=mydict2.aspell
-
-In case you're having trouble interpreting the aspell documentation,
-here's how to make an aspell dictionary file from a flat word list:
-
-rm -f mydict1.aspell    # aspell won't overwrite existing files
-aspell --language-tag=xx create personal ./mydict1.aspell < mywordlist.txt
-
-Watch the slashes.  Aspell likes to see a slash in the name or it will
-search some default location.
-
-The output of the command pipe above is a list of the words that are
-misspelled (in the opinion of aspell), together with file name and
-line number.  Note that the line number designates where the element
-that contains the word started, not where the word actually is.  So
-most likely you will have to search a few lines below the indicated
-location.
+For installation instructions, see the file INSTALL.  After
+installation see the included man page sgml-spell-checker(1) for usage
+information.
 
 If you like this or have comments, feel to write.
 
 -- 
 Peter Eisentraut
 peter_e@gmx.net
-2002-09-20
+2003-09-04

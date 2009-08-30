@@ -4,6 +4,7 @@
 use FileHandle;
 use Getopt::Long;
 use IPC::Open2;
+use File::Basename;
 
 my $aspell = $ENV{'ASPELL'} || '@ASPELL@';
 my $sgmlspl = $ENV{'SGMLSPL'} || '@SGMLSPL@';
@@ -77,11 +78,13 @@ waitpid $pid, 0;
 
 
 sub help {
+    my $me = basename($0);
+
     print <<END;
-$0 is an SGML spell-checker.
+$me is an SGML spell-checker.
 
 Usage:
-  nsgmls ARGS... | $0 [OPTIONS...]
+  nsgmls -l ARGS... | $0 [OPTION]...
 
 Options:
   --debug               Debug mode

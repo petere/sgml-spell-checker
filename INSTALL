@@ -24,4 +24,5 @@ gmake install
 
 You need to use GNU make.
 
-After installation, refer to the README file for usage information.
+After installation, see the included man page sgml-spell-checker(1)
+for usage information.

@@ -36,6 +36,7 @@ refname
 replaceable
 screen
 setindex
+sgmltag
 structfield
 structname
 surname

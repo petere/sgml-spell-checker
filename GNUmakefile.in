@@ -10,21 +10,23 @@ exec_prefix = @exec_prefix@
 bindir = @bindir@
 datadir = @datadir@
 pkgdatadir = $(datadir)/$(PACKAGE_NAME)
+mandir = @mandir@
+man1dir = $(mandir)/man1
 
 srcdir = @srcdir@
 
 INSTALL = $(srcdir)/install-sh -c
 INSTALL_SCRIPT = $(INSTALL) -m 755
 INSTALL_DATA = $(INSTALL) -m 644
-mkinstalldirs = $(INSTALL) -d
-
+mkinstalldirs = $(srcdir)/mkinstalldirs
 ASPELL = @ASPELL@
 PERL = @PERL@
 SGMLSPL = @SGMLSPL@
 
 DISTFILES = COPYING GNUmakefile.in README configure configure.ac \
 	docbook-exclusion-list.txt install-sh sgml-spell-checker.in \
-	sgml-spell-filter-spec.pl INSTALL
+	sgml-spell-filter-spec.pl INSTALL mkinstalldirs \
+	sgml-spell-checker.1
 
 all: sgml-spell-checker
 
@@ -40,9 +42,10 @@ install: all installdirs
 	$(INSTALL_SCRIPT) sgml-spell-checker $(DESTDIR)$(bindir)
 	$(INSTALL_DATA) sgml-spell-filter-spec.pl $(DESTDIR)$(pkgdatadir)
 	$(INSTALL_DATA) docbook-exclusion-list.txt $(DESTDIR)$(pkgdatadir)
+	$(INSTALL_DATA) sgml-spell-checker.1 $(DESTDIR)$(man1dir)
 
 installdirs:
-	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(pkgdatadir)
+	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(pkgdatadir) $(DESTDIR)$(man1dir)
 
 clean:
 	$(RM) sgml-spell-checker
